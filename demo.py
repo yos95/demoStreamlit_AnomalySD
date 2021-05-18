@@ -38,13 +38,8 @@ SCORES = [[82.13, 85.76, 64.57, 86.33, 77.34, 65.28, 77.31, 55.31, 81.49,
 def main():
     state = session._get_state()
     pages = {"Le projet Sound Anomaly Detection": page_dashboard,
-             "Dataset": page_dataset,
-             "Analyse exploratoire": page_analyse,
-             "Transformation des données audio": page_transformation,
-             "Méthodologie": page_methodologie,
-             "Modélisation": page_modelisation,
-             "Prédiction (démo)": page_demo,
-             "Conclusion et perspectives": page_conclusion}
+
+             "Prédiction (démo)": page_demo}
     st.sidebar.title("Sound Anomaly Detection")
     st.sidebar.subheader("Menu")
     page = st.sidebar.radio("", tuple(pages.keys()))
