@@ -45,7 +45,7 @@ def main():
     page = st.sidebar.radio("", tuple(pages.keys()))
     pages[page](state)
     state.sync()
-    st.sidebar.info("Projet DS - Promotion Bootcamp Octobre 2020"
+    st.sidebar.info("Projet DS - Promotion Bootcamp Mai 2020"
                     "\n\n"
                     "Participants :"
                     "\n\n"
