@@ -436,11 +436,14 @@ def page_demo(state):
     ID = f.split('_')[2]
     #lu = DF_RES[(DF_RES.engine==e) & (DF_RES.ID==ID)].label_e.unique()[0]
 
-    # 1. CNN ##################################################################
+    # 1. RNN ##################################################################
     st.subheader("Détection d'anomalie par RNN")
     st.warning("")
+    Model_RNN = keras.models.load_model("Models/Classificateur_GRU256_"+e+"_5N.joblib")
+    # 2. AE ##################################################################
     st.subheader("Détection d'anomalie par AE")
     st.warning("")
+    Model_AE = keras.models.load_model("Models/autoencodeur3D_0506_"+e+"_256dt_600E.joblib")
 
   
 
