@@ -440,10 +440,12 @@ def page_demo(state):
     st.subheader("Détection d'anomalie par RNN")
     st.warning("")
     Model_RNN = keras.models.load_model("Models/Classificateur_GRU256_"+e+"_5N.joblib")
+    st.image(image, width=None)
     # 2. AE ##################################################################
     st.subheader("Détection d'anomalie par AE")
     st.warning("")
     Model_AE = keras.models.load_model("Models/autoencodeur3D_0506_"+e+"_256dt_600E.joblib")
+    st.image(image, width=None)
 
   
 
