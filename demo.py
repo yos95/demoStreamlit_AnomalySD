@@ -8,7 +8,6 @@
 import pandas as pd
 import streamlit as st
 import appsession as session
-import appfunctions as fct
 import matplotlib.pyplot as plt
 from PIL import Image
 from glob import glob
@@ -19,6 +18,16 @@ from keras.utils import np_utils
 import numpy as np
 import joblib
 import librosa
+
+
+def logMelSpectrogram(audio, fe, dt):
+    stfts = np.abs(librosa.stft(audio,n_fft = int(dt*fe),hop_length = int(dt*fe),center = True)).T
+    num_spectrogram_bins = stfts.shape[-1]
+    # MEL filter
+    linear_to_mel_weight_matrix = librosa.filters.mel(sr=fe,n_fft=int(dt*fe) + 1,n_mels=num_spectrogram_bins,).T
+    # Apply the filter to the spectrogram
+    mel_spectrograms = np.tensordot(stfts,linear_to_mel_weight_matrix,1)
+    return np.log(mel_spectrograms + 1e-6)
 
 # #############################################################################
 # Parameters
@@ -447,7 +456,7 @@ def page_demo(state):
 
     # 1. RNN ##################################################################
     st.subheader("Détection d'anomalie par RNN")
-    st.warning("")
+    
     #news_vectorizer = open("./Classificateur_slider_LTSM_0515_V2.pkl","rb")
     #news_cv = joblib.load(news_vectorizer)
     loaded_model = keras.models.load_model("Models/Classificateur_GRU256_"+e+"_5N.joblib")
@@ -457,8 +466,8 @@ def page_demo(state):
     freq = 256
     T_max=10
     machine='ToyCar' 
-    path_model="/content/drive/MyDrive/Datascience projet son/Corentin/"
-    file_path="/content/drive/MyDrive/Datascience projet son/fichiers_audio/ToyCar/anomaly_id_01_00000011.wav"
+    path_model= loaded_model
+    file_path= "dataset_lite/"+e+"/"+f
     file_name="anomaly_id_01_00000011.wav"
     #constantes
     seuil_machine={'ToyCar':[0.5,0.5,0.5,0.95,0.1],'ToyConveyor':[0.5,0.5,0.95,0.07],'fan':[0.5,0.5,0.5,0.95,0.1],'pump':[0.5,0.5,0.5,0.95,0.07],'slider':[0.5,0.95,0.5,0.5,0.05],'valve':[0.5,0.5,0.5,0.95,0.17]}
@@ -486,7 +495,8 @@ def page_demo(state):
         iter-=1 # on met 10 itérations pour éviter de boucler à l'infini en cas d'erreur
     audio_to_pred=audio_to_pred[:,selector].reshape(1,dt,freq)
     print('Chargement du modèle')
-    Classificateur_GRU256=keras.models.load_model(path_model+"Classificateur_GRU256_"+machine+"_5N.joblib")
+    Classificateur_GRU256=keras.models.load_model("Models/Classificateur_GRU256_"+e+"_5N.joblib")
+    #Classificateur_GRU256=keras.models.load_model(path_model+"Classificateur_GRU256_"+e+"_5N.joblib")
     print('Prédictions')
     y_pred = Classificateur_GRU256.predict(audio_to_pred)
     y_pred_save = tuple(y_pred)
@@ -494,24 +504,20 @@ def page_demo(state):
     # on réalise la prédiction d'ID
     pred_ID=ID_machine[machine][y_pred[:y_pred.shape[0]-1].argmax()]
     # on réalise la prédiction normal / anormal
+    pred_anorm = ""
     if (seuil_machine[machine][y_pred[:y_pred.shape[0]-1].argmax()] > y_pred[y_pred[:y_pred.shape[0]-1].argmax()]) | (seuil_machine[machine][y_pred.shape[0]-1] < y_pred[y_pred.shape[0]-1]):
-        pred_anorm == 'anomaly'
+        pred_anorm = 'anomaly'
     else :
-        pred_anorm == 'normal'
+        pred_anorm = 'normal'
 
     true=df[(df.Machine== machine) & (df.fichier==file_name)]
     cross_ID= 'bonne ' if pred_ID=='ID_'+str(true.iloc[0,5]) else 'fausse'
     cross_norm= 'bonne ' if pred_anorm==true.iloc[0,6] else 'fausse'
-    print('Données réelles : ')  
-    print(machine+' ID_'+str(true.iloc[0,5])+" "+true.iloc[0,6]+ '\n')
-    print('Prédiction')
-    print("la machine ", machine, " ", pred_ID, " à un son ", pred_anorm)
-    print("la prédiction d'ID est "+cross_ID+", la prédiction de normalité est ",cross_norm)
+    st.success('Données réelles : ' '\n' + machine + ' ID_'+str(true.iloc[0,5])+" "+true.iloc[0,6]+ '\n\n' 'Prédiction ' + "la machine "+ machine+ " "+ pred_ID + " à un son "+ pred_anorm + '\n'  "la prédiction d'ID est "+ cross_ID + ", la prédiction de normalité est " +cross_norm)
     #Model_RNN = keras.models.load_model("Models/Classificateur_GRU256_ToyCar_5N.joblib")
     #st.image(image, width=None)
     # 2. AE ##################################################################
-    st.subheader("Détection d'anomalie par AE")
-    st.warning("")
+   
     #Model_AE = keras.models.load_model("Models/Classificateur_GRU256_ToyCar_5N.joblib")
     #st.image(image, width=None)
 
