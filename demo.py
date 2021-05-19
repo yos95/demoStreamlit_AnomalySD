@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from glob import glob
 from sklearn.metrics import f1_score
-
+import keras
 # #############################################################################
 # Parameters
 # #############################################################################
