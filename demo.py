@@ -67,14 +67,14 @@ def main():
 # #############################################################################
         
 def page_dashboard(state):
-    st.title("Sound Anomaly Detection")
+    st.title("Anomalous Sound Detection")
     st.header("Détection d'anomalies parmi des bruits de machines")
     st.write("\n\n")  
     st.write(
     "On remplit avec quoi ? "
     "\n\n"
     "Le repo github complet est disponible [ici]\
-    (https://github.com/cromerow/sound_anomaly_detection_demo).", 
+    (https://github.com/yos95/demoStreamlit_AnomalySD).", 
     unsafe_allow_html=True)  
 
 
