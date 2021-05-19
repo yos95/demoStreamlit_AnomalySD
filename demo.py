@@ -18,6 +18,7 @@ from tensorflow import keras
 from keras.utils import np_utils
 import numpy as np
 import joblib
+import librosa
 
 # #############################################################################
 # Parameters
@@ -76,7 +77,10 @@ def page_dashboard(state):
     st.header("Détection d'anomalies parmi des bruits de machines")
     st.write("\n\n")  
     st.write(
-    "On remplit avec quoi ? "
+    " Le challenge DCASE2020 met au défi de trouver un modèle capable de prédire les anomalies générées par "
+    " des machines d'usine sachant que le jeu de données est composé essentiellement de données audio normales. "
+    " Le dataset dispose de quelques fichiers anormaux dans un dataset test pour chacune des 6 machines."
+    " Les fichiers de chaque machine sont répartis sur trois ou quatre ID selon la machine. "
     "\n\n"
     "Le repo github complet est disponible [ici]\
     (https://github.com/yos95/demoStreamlit_AnomalySD).", 
@@ -446,7 +450,7 @@ def page_demo(state):
     st.warning("")
     #news_vectorizer = open("./Classificateur_slider_LTSM_0515_V2.pkl","rb")
     #news_cv = joblib.load(news_vectorizer)
-    loaded_model = keras.models.load_model("./Classificateur_GRU256_ToyCar_5N.joblib")
+    loaded_model = keras.models.load_model("Models/Classificateur_GRU256_"+e+"_5N.joblib")
     
     #CODE PREDICTION STREAMLIT
     dt = 256
@@ -491,9 +495,10 @@ def page_demo(state):
     pred_ID=ID_machine[machine][y_pred[:y_pred.shape[0]-1].argmax()]
     # on réalise la prédiction normal / anormal
     if (seuil_machine[machine][y_pred[:y_pred.shape[0]-1].argmax()] > y_pred[y_pred[:y_pred.shape[0]-1].argmax()]) | (seuil_machine[machine][y_pred.shape[0]-1] < y_pred[y_pred.shape[0]-1]):
-    pred_anorm='anomaly'
+        pred_anorm == 'anomaly'
     else :
-    pred_anorm='normal'
+        pred_anorm == 'normal'
+
     true=df[(df.Machine== machine) & (df.fichier==file_name)]
     cross_ID= 'bonne ' if pred_ID=='ID_'+str(true.iloc[0,5]) else 'fausse'
     cross_norm= 'bonne ' if pred_anorm==true.iloc[0,6] else 'fausse'
