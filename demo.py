@@ -38,7 +38,6 @@ SCORES = [[82.13, 85.76, 64.57, 86.33, 77.34, 65.28, 77.31, 55.31, 81.49,
 def main():
     state = session._get_state()
     pages = {"Sound Anomaly Detection": page_dashboard,
-
              "Demo": page_demo}
     st.sidebar.title("Sound Anomaly Detection")
     st.sidebar.subheader("Menu")
@@ -438,10 +437,10 @@ def page_demo(state):
     #lu = DF_RES[(DF_RES.engine==e) & (DF_RES.ID==ID)].label_e.unique()[0]
 
     # 1. CNN ##################################################################
-    st.subheader("Détection d'anomalie par clustering")
-    st.warning("Pour pouvoir visualiser les résultats, on effectue une PCA par\
-               laquelle le problème est ramené à 2 dimensions.\n\n"
-               "Ces résultats sont très proches de ceux obtenus par k-Means.")
+    st.subheader("Détection d'anomalie par RNN")
+    st.warning("")
+    st.subheader("Détection d'anomalie par AE")
+    st.warning("")
 
     scores = SCORES[1]
     #f_pca1 = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].PCA1
