@@ -13,7 +13,12 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from glob import glob
 from sklearn.metrics import f1_score
-import keras
+import tensorflow as tf
+from tensorflow import keras
+from keras.utils import np_utils
+import numpy as np
+import joblib
+
 # #############################################################################
 # Parameters
 # #############################################################################
@@ -439,13 +444,15 @@ def page_demo(state):
     # 1. RNN ##################################################################
     st.subheader("Détection d'anomalie par RNN")
     st.warning("")
-    Model_RNN = keras.models.load_model("Models/Classificateur_GRU256_"+e+"_5N.joblib")
-    st.image(image, width=None)
+    loaded_model = keras.models.load_model("Models/Classificateur_GRU256_valve_son_5N.joblib")
+
+    #Model_RNN = keras.models.load_model("Models/Classificateur_GRU256_ToyCar_5N.joblib")
+    #st.image(image, width=None)
     # 2. AE ##################################################################
     st.subheader("Détection d'anomalie par AE")
     st.warning("")
-    Model_AE = keras.models.load_model("Models/autoencodeur3D_0506_"+e+"_256dt_600E.joblib")
-    st.image(image, width=None)
+    #Model_AE = keras.models.load_model("Models/Classificateur_GRU256_ToyCar_5N.joblib")
+    #st.image(image, width=None)
 
   
 
