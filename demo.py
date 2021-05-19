@@ -37,9 +37,9 @@ SCORES = [[82.13, 85.76, 64.57, 86.33, 77.34, 65.28, 77.31, 55.31, 81.49,
 
 def main():
     state = session._get_state()
-    pages = {"Le projet Sound Anomaly Detection": page_dashboard,
+    pages = {"Sound Anomaly Detection": page_dashboard,
 
-             "Prédiction (démo)": page_demo}
+             "Demo": page_demo}
     st.sidebar.title("Sound Anomaly Detection")
     st.sidebar.subheader("Menu")
     page = st.sidebar.radio("", tuple(pages.keys()))
@@ -50,16 +50,16 @@ def main():
                     "Participants :"
                     "\n\n"
                     "[Corentin]\
-                    (https://www.linkedin.com/in/abel-traore-a867191b5/)"
+                    (https://www.linkedin.com/in/corentindesmettre-9741951a/)"
                     "\n\n"
                     "[Astrid]\
-                    (https://www.linkedin.com/in/clément-romerowski-33798443/)"
+                    (https://www.linkedin.com/in/astrid-lancrey/)"
                     "\n\n"
                     "[Youcef]\
-                    (https://www.linkedin.com/in/clément-romerowski-33798443/)"
+                    (https://www.linkedin.com/in/youcef-madjidi/)"
                     "\n\n"
                     "[Yossef]\
-                    (https://www.linkedin.com/in/clément-romerowski-33798443/)"
+                    (https://www.linkedin.com/in/yossef-aboukrat-39b90964/)"
                     )
     
     
@@ -421,20 +421,21 @@ def page_modelisation(state):
 # page PREDICTION
 # #############################################################################
 def page_demo(state):
+    df = pd.read_csv("Fichiers_son.csv")
     st.set_option('deprecation.showfileUploaderEncoding', False)                                       
     st.title("Prédiction (Démo)")
     st.subheader("Choix de la machine")
-    engine = list(DF.engine.unique())
+    engine = list(df.Machine.unique())
     e = st.selectbox("Choix de la machine", engine)
     st.subheader("Choix du fichier")
-    files = glob(DATASET_FOLDER+'/'+e+'/*.wav')
+    files = glob("dataset_lite"+'/'+e+'/*.wav')
     file_names = [f.split('/')[-1] for f in files]
     f = st.selectbox("Choix du fichier", file_names)    
     
     st.audio(files[file_names.index(f)])
 
     ID = f.split('_')[2]
-    lu = DF_RES[(DF_RES.engine==e) & (DF_RES.ID==ID)].label_e.unique()[0]
+    #lu = DF_RES[(DF_RES.engine==e) & (DF_RES.ID==ID)].label_e.unique()[0]
 
     # 1. CNN ##################################################################
     st.subheader("Détection d'anomalie par clustering")
@@ -443,18 +444,18 @@ def page_demo(state):
                "Ces résultats sont très proches de ceux obtenus par k-Means.")
 
     scores = SCORES[1]
-    f_pca1 = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].PCA1
-    f_pca2 = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].PCA2
+    #f_pca1 = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].PCA1
+    #f_pca2 = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].PCA2
     # Affichage de la PCA pour la machine identifiée
     plt0_load_state = st.text('Loading plot... ')
     fig = plt.figure(figsize=(10,6))
-    plt.scatter(DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==1)].PCA1, 
-                DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==1)].PCA2,
-                alpha=0.6, label='normal data')
-    plt.scatter(DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==0)].PCA1, 
-                DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==0)].PCA2,
-                alpha=0.6, label='anomalous data')
-    plt.plot(f_pca1, f_pca2, c='w', marker='*', markersize=16, mec='k')
+    #plt.scatter(DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==1)].PCA1, 
+     #           DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==1)].PCA2,
+               # alpha=0.6, label='normal data')
+    #plt.scatter(DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==0)].PCA1, 
+      #          DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==0)].PCA2,
+               # alpha=0.6, label='anomalous data')
+    #plt.plot(f_pca1, f_pca2, c='w', marker='*', markersize=16, mec='k')
     plt.xlabel("PCA 1")
     plt.ylabel("PCA 2")
     plt.title("Représentation de la PCA - ROC-AUC : {:.2f}%".format(scores[lu]))
