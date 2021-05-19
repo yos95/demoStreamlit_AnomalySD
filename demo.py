@@ -442,61 +442,7 @@ def page_demo(state):
     st.subheader("Détection d'anomalie par AE")
     st.warning("")
 
-    scores = SCORES[1]
-    #f_pca1 = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].PCA1
-    #f_pca2 = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].PCA2
-    # Affichage de la PCA pour la machine identifiée
-    plt0_load_state = st.text('Loading plot... ')
-    fig = plt.figure(figsize=(10,6))
-    #plt.scatter(DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==1)].PCA1, 
-     #           DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==1)].PCA2,
-               # alpha=0.6, label='normal data')
-    #plt.scatter(DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==0)].PCA1, 
-      #          DF_RES[(DF_RES.label_e==lu)&(DF_RES.label==0)].PCA2,
-               # alpha=0.6, label='anomalous data')
-    #plt.plot(f_pca1, f_pca2, c='w', marker='*', markersize=16, mec='k')
-    plt.xlabel("PCA 1")
-    plt.ylabel("PCA 2")
-    plt.title("Représentation de la PCA - ROC-AUC : {:.2f}%".format(scores[lu]))
-    plt.legend()
-    st.pyplot(fig)
-    plt0_load_state.text("")
-
-    # 2. AUTO-ENCODER #########################################################
-    st.subheader("Détection d'anomalie par auto-encodeur")
-    st.info("L'idée est de choisir le seuil au mieux pour minimiser les\
-            erreurs de diagnostic.")
-    scores = SCORES[0]
-    mse = DF_RES[DF_RES.label_e==lu].mse
-    labels = DF_RES[DF_RES.label_e==lu].label.astype(bool)
-
-    f_mse = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].mse.iloc[0]
-    f_l = DF_RES[DF_RES.audio_path=='./dc2020task2/'+e+'/test/'+f].label.iloc[0]
-    seuil = st.slider("Seuil", min_value=min(mse), max_value=max(mse), 
-                      value=(min(mse)+max(mse))/2, step=0.001, format='%.3f')
-    # Affichage de l'erreur (mse) pour la machine identifiée
-    plt_load_state = st.text('Loading plot... ')
-    fig = plt.figure(figsize=(10,6))
-    plt.hist(mse[labels], bins=50, alpha=0.6, label='normal loss')
-    plt.hist(mse[~labels], bins=50, alpha=0.6, label='anomalous loss')
-    plt.plot(f_mse, 2, c='w', marker='*', markersize=16, mec='k')
-    plt.xlabel("MSE")
-    plt.ylabel("Nombre d'observations")
-    plt.title("Répartition de l'erreur - ROC-AUC : {:.2f}%".format(scores[lu]))
-    plt.legend()
-    plt.axvline(seuil, c='r')
-    st.pyplot(fig)
-    plt_load_state.text("")
-    
-    # Calcul du f1-score pour le seuil choisi
-    score_f1 = f1_score(labels, mse<seuil)
-    st.write("Le f1-score est de {:.2f}% pour ce seuil.".format(100*score_f1))
-    if f_mse<seuil and f_l==1:
-        st.success("L'entrée est bien considérée comme normale.")
-    elif f_mse>seuil and f_l==0:
-        st.success("L'entrée est bien considérée comme anormale.")
-    else:
-        st.error("Erreur de diagnostic !")
+  
 
 
 # #############################################################################
