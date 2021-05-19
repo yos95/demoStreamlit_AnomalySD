@@ -444,7 +444,9 @@ def page_demo(state):
     # 1. RNN ##################################################################
     st.subheader("Détection d'anomalie par RNN")
     st.warning("")
-    loaded_model = keras.models.load_model("Models/Classificateur_GRU256_valve_son_5N.joblib")
+    #news_vectorizer = open("./Classificateur_slider_LTSM_0515_V2.pkl","rb")
+    #news_cv = joblib.load(news_vectorizer)
+    loaded_model = keras.models.load_model("./Classificateur_GRU256_ToyCar_5N.joblib")
 
     #Model_RNN = keras.models.load_model("Models/Classificateur_GRU256_ToyCar_5N.joblib")
     #st.image(image, width=None)
