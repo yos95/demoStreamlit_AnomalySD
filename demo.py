@@ -466,10 +466,10 @@ def page_demo(state):
     dt = 256
     freq = 256
     T_max=10
-    machine='ToyCar' 
+    machine=e
     path_model= loaded_model
     file_path= "dataset_lite/"+e+"/"+f
-    file_name="anomaly_id_01_00000011.wav"
+    file_name=f
     #constantes
     seuil_machine={'ToyCar':[0.5,0.5,0.5,0.95,0.1],'ToyConveyor':[0.5,0.5,0.95,0.07],'fan':[0.5,0.5,0.5,0.95,0.1],'pump':[0.5,0.5,0.5,0.95,0.07],'slider':[0.5,0.95,0.5,0.5,0.05],'valve':[0.5,0.5,0.5,0.95,0.17]}
     ID_machine={'ToyCar':["ID_2","ID_3","ID_4","ID_1"],'ToyConveyor':["ID_2","ID_3","ID_1"],'fan':["ID_4","ID_6","ID_0","ID_2"],'pump':["ID_0","ID_2","ID_4","ID_6"],'slider':["ID_0","ID_2","ID_4","ID_6"],'valve':["ID_0","ID_2","ID_4","ID_6"]}
