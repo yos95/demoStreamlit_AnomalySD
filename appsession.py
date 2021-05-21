@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Dec 28 12:33:33 2020
 
-@author: clement
-"""
 
 from streamlit.hashing import _CodeHasher
 
